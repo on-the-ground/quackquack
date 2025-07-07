@@ -1,6 +1,6 @@
 {
-  "name": "@on-the-ground/alankay",
-  "version": "0.0.17",
+  "name": "@on-the-ground/alankay-js",
+  "version": "0.0.1",
   "description": "A minimal async control flow framework for browser and Node.js daemons.",
   "keywords": [
     "daemon",
@@ -46,9 +46,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/on-the-ground/alankay"
+    "url": "https://github.com/on-the-ground/alankay-js"
   },
   "bugs": {
-    "url": "https://github.com/on-the-ground/alankay/issues"
+    "url": "https://github.com/on-the-ground/alankay-js/issues"
   }
 }
