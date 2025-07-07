@@ -1,0 +1,54 @@
+{
+  "name": "@on-the-ground/alankay",
+  "version": "0.0.17",
+  "description": "A minimal async control flow framework for browser and Node.js daemons.",
+  "keywords": [
+    "daemon",
+    "actor",
+    "async",
+    "event-loop",
+    "task-group",
+    "browser",
+    "nodejs"
+  ],
+  "author": "Joohyung Park <joohyung-park@on-the-ground.org>",
+  "license": "MIT",
+  "files": [
+    "dist/index.mjs",
+    "dist/index.cjs",
+    "dist/index.d.ts"
+  ],
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    "import": "./dist/index.mjs",
+    "require": "./dist/index.cjs"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "clean": "rm -rf dist",
+    "test": "vitest run",
+    "prepublishOnly": "yarn build && yarn test"
+  },
+  "dependencies": {
+    "tslib": "^2.8.1"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.6",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-typescript": "^12.1.4",
+    "prettier": "^3.6.2",
+    "rollup": "^4.44.2",
+    "rollup-plugin-dts": "^6.2.1",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/on-the-ground/alankay"
+  },
+  "bugs": {
+    "url": "https://github.com/on-the-ground/alankay/issues"
+  }
+}
