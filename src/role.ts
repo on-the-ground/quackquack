@@ -1,8 +1,10 @@
+import * as zm from "@zod/mini";
+
 /**
  * Internal symbol used to store the set of roles attached to an object.
  * This property is non-enumerable and hidden from standard inspection.
  */
-const ROLES_KEY = Symbol("@on-the-ground/alankay-js/roles");
+const ROLES_KEY = Symbol("@on-the-ground/quackquack/roles");
 
 /**
  * A Protocol defines the structure of a Role.

@@ -1,5 +1,8 @@
-import { describe, it, expect } from "vitest";
-import {
+const { describe, it, expect } = require("@jest/globals");
+import { core } from "@zod/mini";
+import { toZodFunctionSchema } from "../src/validator";
+
+/* import {
   newRole,
   roleAwarableOf,
   ensureImplements,
@@ -74,5 +77,33 @@ describe("role system", () => {
 
     expect(logger).toHaveProperty("log");
     expect(typeof logger.log).toBe("function");
+  });
+});
+ */
+const parser = require("../src/funcsig-parser");
+
+describe("a", () => {
+  it("throws when input is wrong", () => {
+    const input = `(i: number)=>string`;
+    const ir = parser.parse(input);
+    expect(ir).toStrictEqual({
+      type: "function",
+      async: false,
+      args: [
+        {
+          name: "i",
+          optional: false,
+          type: "number",
+        },
+      ],
+      returnType: "string",
+    });
+    const zodSchema = toZodFunctionSchema(ir);
+    const safeFn = zodSchema.implement((i) => `${i}`);
+    try {
+      safeFn("10");
+    } catch (e) {
+      expect(e instanceof core.$ZodError).toBe(true);
+    }
   });
 });

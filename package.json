@@ -1,15 +1,25 @@
 {
-  "name": "@on-the-ground/alankay-js",
+  "name": "@on-the-ground/quackquack",
   "version": "0.0.1",
-  "description": "A minimal async control flow framework for browser and Node.js daemons.",
+  "description": "Message-based duck typing system focused on behavioral roles instead of structural types.",
   "keywords": [
-    "daemon",
-    "actor",
-    "async",
-    "event-loop",
-    "task-group",
-    "browser",
-    "nodejs"
+    "duck-typing",
+    "protocol",
+    "message-passing",
+    "runtime-type-checking",
+    "behavioral-type",
+    "role",
+    "guard",
+    "contract",
+    "object-oriented",
+    "dynamic-typing",
+    "introspection",
+    "composition",
+    "interface",
+    "existence",
+    "alan-kay",
+    "oop",
+    "quack"
   ],
   "author": "Joohyung Park <joohyung-park@on-the-ground.org>",
   "license": "MIT",
@@ -28,27 +38,31 @@
   "scripts": {
     "build": "rollup -c",
     "clean": "rm -rf dist",
-    "test": "vitest run",
+    "test": "jest",
     "prepublishOnly": "yarn build && yarn test"
   },
   "dependencies": {
+    "@zod/mini": "^4.0.0-beta.0",
     "tslib": "^2.8.1"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^28.0.6",
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-typescript": "^12.1.4",
+    "@types/jest": "^30.0.0",
+    "jest": "^30.0.4",
     "prettier": "^3.6.2",
     "rollup": "^4.44.2",
     "rollup-plugin-dts": "^6.2.1",
-    "typescript": "^5.8.3",
-    "vitest": "^3.2.4"
+    "ts-jest": "^29.4.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/on-the-ground/alankay-js"
+    "url": "https://github.com/on-the-ground/quackquack"
   },
   "bugs": {
-    "url": "https://github.com/on-the-ground/alankay-js/issues"
+    "url": "https://github.com/on-the-ground/quackquack/issues"
   }
 }
