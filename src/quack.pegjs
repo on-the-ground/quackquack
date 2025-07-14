@@ -25,7 +25,18 @@ ParameterList
     }
 
 Parameter
+  = NamedParam / UnnamedParam
+
+NamedParam
   = name:Identifier optional:"?"? _ ":" _ type:Type {
+      return {
+        optional: optional !== null,
+        type
+      };
+    }
+
+UnnamedParam
+  = type:Type optional:"?"? {
       return {
         optional: optional !== null,
         type

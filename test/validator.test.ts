@@ -5,14 +5,14 @@ const quackParser = require("../src/quack-parser");
 
 describe("zod validator", () => {
   it("throws when input is wrong", () => {
-    const quackSignature = `(i: number)=>string`;
+    const quackSignature = `(number?)=>string`;
     const ir = quackParser.parse(quackSignature);
     expect(ir).toStrictEqual({
       type: "function",
       async: false,
       parameters: [
         {
-          optional: false,
+          optional: true,
           type: "number",
         },
       ],
