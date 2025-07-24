@@ -1,6 +1,7 @@
 // rollup.config.js
 import typescript from "@rollup/plugin-typescript";
 import dts from "rollup-plugin-dts";
+import copy from "rollup-plugin-copy";
 
 export default [
   {
@@ -17,7 +18,14 @@ export default [
         sourcemap: true,
       },
     ],
-    plugins: [typescript({ tsconfig: "./tsconfig.json" })],
+    plugins: [
+      typescript({ tsconfig: "./tsconfig.json" }),
+      copy({
+        targets: [{ src: "src/quack-parser.js", dest: "dist" }],
+        hook: "writeBundle",
+        verbose: true,
+      }),
+    ],
   },
   {
     input: "src/index.ts",
