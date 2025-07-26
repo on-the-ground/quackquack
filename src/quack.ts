@@ -24,8 +24,12 @@ export function quackIrOf(fnSig: string): QuackIR {
  * @param fn - A function which may have been decorated or marked with `quackable`.
  * @returns The QuackIR if present, otherwise undefined.
  */
-export function quackIRFrom(fn: Function): QuackIR | undefined {
-  return (fn as any)[QUACK_KEY];
+export function quackIrFrom(fn: Function): QuackIR | null {
+  try {
+    return (fn as any)[QUACK_KEY];
+  } catch {
+    return null;
+  }
 }
 
 /**
@@ -35,7 +39,7 @@ export function quackIRFrom(fn: Function): QuackIR | undefined {
  * @returns True if the function has a QuackIR attached, false otherwise.
  */
 export function isQuackable(fn: Function): boolean {
-  return !(quackIRFrom(fn) === undefined);
+  return !!quackIrFrom(fn);
 }
 
 /**

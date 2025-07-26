@@ -1,4 +1,4 @@
-import { quackIRFrom as quackIrFrom, quackIrOf } from "./quack";
+import { quackIrFrom, quackIrOf } from "./quack";
 import { toZodSchema } from "./quack-validator";
 const fastDeepEqual = require("fast-deep-equal");
 
@@ -74,6 +74,9 @@ export const expectDuck =
     const clone = Object.create(obj);
     const keysOfDuck: Array<keyof D> = Object.keys(expected) as Array<keyof D>;
     for (const key of keysOfDuck) {
+      if (!(key in obj) || typeof obj[key] !== "function") {
+        throw new Error(`Method ${String(key)} is missing from the object.`);
+      }
       clone[key] = expectQuack(expected[key], strict)(obj[key]);
     }
     return clone as { [K in keyof D]: O[K] };
