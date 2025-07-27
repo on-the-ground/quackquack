@@ -59,6 +59,24 @@ describe("expectQuack", () => {
       "Function does not match expected quack"
     );
   });
+  it("wraps and validates an async non-quacked function", async () => {
+    const expectAsyncSchema = expectQuack(
+      "async (x: number, y: string) => boolean"
+    );
+    const asyncFn = async (x: number, y: string): Promise<boolean> => {
+      return typeof y === "string" && x > 0;
+    };
+    const wrapped = expectAsyncSchema(asyncFn);
+
+    await expect(wrapped(1, "ok")).resolves.toBe(true);
+    await expect(wrapped(-1, "bad")).resolves.toBe(false);
+    try {
+      const wrapped = expectAsyncSchema(async (x: number, y: number) => 1);
+      await wrapped(123, 123);
+    } catch (e) {
+      expect(e instanceof core.$ZodError).toBe(true);
+    }
+  });
 });
 
 describe("expectDuck", () => {

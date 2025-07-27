@@ -150,7 +150,7 @@ Once a function or method is `quackable` (i.e., decorated with `@quackable`),
 
 When you `expectQuack` a `quackable` function,
 
-It simply compares two **precompiled QuackIRs**:
+It simply compares two **precompiled QuackAsts**:
 
 - ✅ The **expected** signature string
 - ✅ The **given** function’s signature

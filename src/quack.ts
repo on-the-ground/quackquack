@@ -6,25 +6,25 @@ import { FunctionType } from "./quack-validator";
 const QUACK_KEY = Symbol("@on-the-ground/quackquack");
 const quackParser = require("./quack-parser");
 
-export type QuackIR = FunctionType;
+export type QuackAst = FunctionType;
 
 /**
- * Parses a string representation of a function signature into a QuackIR (intermediate representation).
+ * Parses a string representation of a function signature into a QuackAst (intermediate representation).
  *
  * @param fnSig - A string in the format of a function signature, e.g. "(x: number, y: string) => boolean"
- * @returns A QuackIR object representing the parsed function signature.
+ * @returns A QuackAst object representing the parsed function signature.
  */
-export function quackIrOf(fnSig: string): QuackIR {
+export function quackAstOf(fnSig: string): QuackAst {
   return quackParser.parse(fnSig);
 }
 
 /**
- * Retrieves the QuackIR metadata from a previously marked function.
+ * Retrieves the QuackAst metadata from a previously marked function.
  *
  * @param fn - A function which may have been decorated or marked with `quackable`.
- * @returns The QuackIR if present, otherwise undefined.
+ * @returns The QuackAst if present, otherwise undefined.
  */
-export function quackIrFrom(fn: Function): QuackIR | null {
+export function quackAstFrom(fn: Function): QuackAst | null {
   try {
     return (fn as any)[QUACK_KEY];
   } catch {
@@ -33,13 +33,13 @@ export function quackIrFrom(fn: Function): QuackIR | null {
 }
 
 /**
- * Checks if a function has been marked as quackable (i.e., has QuackIR metadata).
+ * Checks if a function has been marked as quackable (i.e., has QuackAst metadata).
  *
  * @param fn - A function to check.
- * @returns True if the function has a QuackIR attached, false otherwise.
+ * @returns True if the function has a QuackAst attached, false otherwise.
  */
 export function isQuackable(fn: Function): boolean {
-  return !!quackIrFrom(fn);
+  return !!quackAstFrom(fn);
 }
 
 /**
@@ -73,29 +73,29 @@ export function isQuackable(fn: Function): boolean {
  * ```
  *
  * @param sig - The expected function signature in string form.
- * @returns A decorator or a function wrapper that marks the target with QuackIR metadata.
+ * @returns A decorator or a function wrapper that marks the target with QuackAst metadata.
  */
 export function quackable<I extends any[], O>(
   sig: string
 ): (fn: (...args: I) => O) => (...args: I) => O;
 export function quackable(sig: string): MethodDecorator;
 export function quackable(sig: string): any {
-  const qir = quackIrOf(sig);
+  const qast = quackAstOf(sig);
 
   return function (...args: any[]) {
     if (isFunction(args)) {
       const fn = args[0];
-      (fn as any)[QUACK_KEY] = qir;
+      (fn as any)[QUACK_KEY] = qast;
       return fn;
     }
     if (isLegacyMethodDecorator(args)) {
       const fn = args[2].value;
-      (fn as any)[QUACK_KEY] = qir;
+      (fn as any)[QUACK_KEY] = qast;
       return;
     }
     if (isECMAMethodDecorator(args)) {
       const fn = args[0];
-      (fn as any)[QUACK_KEY] = qir;
+      (fn as any)[QUACK_KEY] = qast;
       return;
     }
     throw new Error("Invalid usage of quackable");

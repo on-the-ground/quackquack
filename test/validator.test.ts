@@ -6,8 +6,8 @@ const quackParser = require("../src/quack-parser");
 describe("zod validator", () => {
   it("throws when input is wrong", () => {
     const quackSignature = `(number?)=>string`;
-    const ir = quackParser.parse(quackSignature);
-    expect(ir).toStrictEqual({
+    const ast = quackParser.parse(quackSignature);
+    expect(ast).toStrictEqual({
       type: "function",
       async: false,
       parameters: [
@@ -18,7 +18,7 @@ describe("zod validator", () => {
       ],
       return: "string",
     });
-    const zodSchema = toZodSchema(ir);
+    const zodSchema = toZodSchema(ast);
     const safeFn = zodSchema.implement((i) => `${i}`);
     try {
       safeFn("10");

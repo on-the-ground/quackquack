@@ -1,6 +1,6 @@
 {
   "name": "@on-the-ground/quackquack",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "Message-based duck typing system focused on behavioral roles instead of structural types.",
   "keywords": [
     "duck-typing",

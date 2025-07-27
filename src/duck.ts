@@ -1,5 +1,5 @@
-import { quackIrFrom, quackIrOf } from "./quack";
-import { toZodSchema } from "./quack-validator";
+import { quackAstFrom, quackAstOf } from "./quack";
+import { type FunctionType, toZodSchema } from "./quack-validator";
 const fastDeepEqual = require("fast-deep-equal");
 
 export type QuackDSL = string;
@@ -31,18 +31,26 @@ export type QuackDSL = string;
 export const expectQuack =
   (expected: QuackDSL, strict = false) =>
   <Q extends (...args: any[]) => any>(fn: Q): Q => {
-    const expectedIr = quackIrOf(expected);
-    const actualIr = quackIrFrom(fn);
-    if (!actualIr) {
-      return toZodSchema(expectedIr).implement(fn) as Q;
+    const expectedAst = quackAstOf(expected);
+    const actualAst = quackAstFrom(fn);
+    if (!actualAst) {
+      return withSchemaValidation(fn, expectedAst);
     }
-    if (fastDeepEqual(actualIr, expectedIr)) {
-      return strict ? (toZodSchema(expectedIr).implement(fn) as Q) : fn;
+    if (fastDeepEqual(actualAst, expectedAst)) {
+      return strict ? withSchemaValidation(fn, expectedAst) : fn;
     }
     throw new Error(
-      `Function does not match expected quack.\nExpected: ${expectedIr}\nGot: ${actualIr}`
+      `Function does not match expected quack.\nExpected: ${expectedAst}\nGot: ${actualAst}`
     );
   };
+
+const withSchemaValidation = <Q extends (...args: any[]) => any>(
+  fn: Q,
+  expectedAst: FunctionType
+): Q =>
+  expectedAst.async
+    ? (toZodSchema(expectedAst).implementAsync(fn) as Q)
+    : (toZodSchema(expectedAst).implement(fn) as Q);
 
 /**
  * Validates or wraps an entire object to ensure that each method matches a declared Quack signature.

@@ -14,7 +14,7 @@ import {
   core,
 } from "@zod/mini";
 
-// --- IR 타입 정의 ---
+// --- Ast 타입 정의 ---
 type ParsedType =
   | "number"
   | "string"
@@ -75,7 +75,7 @@ const sanitizeOptionalParams = <T extends readonly ParameterType[]>(
   return ps;
 };
 
-// --- 파서: IR → Zod ---
+// --- 파서: Ast → Zod ---
 function toZodInnerSchema(type: ParsedType): BaseZodSchema {
   if (typeof type === "string") {
     switch (type) {
@@ -119,30 +119,30 @@ function toZodInnerSchema(type: ParsedType): BaseZodSchema {
 }
 
 // --- param schema ---
-const paramSchemaOf = (paramIR: ParameterType): ExtendedZodSchema => {
-  const base = toZodInnerSchema(paramIR.type);
-  return paramIR.optional ? z.optional(base) : base;
+const paramSchemaOf = (paramAst: ParameterType): ExtendedZodSchema => {
+  const base = toZodInnerSchema(paramAst.type);
+  return paramAst.optional ? z.optional(base) : base;
 };
 
 export const paramSchemasOf = <T extends readonly ParameterType[]>(
-  parameterIRs: T
+  paramAsts: T
 ): z.ZodMiniTuple<{
   [K in keyof T]: T[K] extends { optional: true }
     ? z.ZodMiniOptional<BaseZodSchema>
     : BaseZodSchema;
 }> => {
-  const safeParms = sanitizeOptionalParams(parameterIRs);
+  const safeParms = sanitizeOptionalParams(paramAsts);
   return z.tuple(safeParms.map(paramSchemaOf) as any);
 };
 
 export const returnSchemaOf = toZodInnerSchema;
 
 // --- 최종 함수 schema 생성 ---
-export function toZodSchema(quackIR: FunctionType): core.$ZodFunction {
+export function toZodSchema(quackAst: FunctionType): core.$ZodFunction {
   return new core.$ZodFunction({
     type: "function",
-    input: paramSchemasOf(quackIR.parameters),
-    output: returnSchemaOf(quackIR.return),
+    input: paramSchemasOf(quackAst.parameters),
+    output: returnSchemaOf(quackAst.return),
   });
 }
 
